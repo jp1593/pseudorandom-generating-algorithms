@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # LGC Function
-def LGC(seed, a, c, m, amount): 
+def LCG(seed, a, c, m, amount): 
     """
     Generador de Congruencia Lineal (LCG)
     """
@@ -14,7 +14,7 @@ def LGC(seed, a, c, m, amount):
     return pseudo_list
     
 # Using the Borland C/C++ parameters
-pseudo_number = LGC(seed=20, a=22695477,c=1,m=2**31, amount=1000)
+pseudo_number = LCG(seed=20, a=22695477,c=1,m=2**31, amount=1000)
 
 # Print of list items in a iterative way
 print(*pseudo_number, sep='\n')
