@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 # Blum Blum Function
 def BlumBlum(seed, p, q, amount):
     x = seed
@@ -9,5 +11,15 @@ def BlumBlum(seed, p, q, amount):
     return random_numbers
 
 # Function call and print data
-blum_generation = BlumBlum(3, 11, 19, 10)
+blum_generation = BlumBlum(123, 383, 503, 10000)
 print(blum_generation)
+
+#Histogram
+plt.figure(figsize=(8,5))
+plt.hist(blum_generation, bins=35, color='skyblue', edgecolor='black', alpha=0.7)
+plt.title("Histogram of Pseudo-random Numbers (BlumBlum)")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.grid(axis='y', alpha=0.3)
+plt.show()
+
