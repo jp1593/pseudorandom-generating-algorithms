@@ -12,7 +12,7 @@ def BlumBlum(seed, p, q, amount):
 
 # Function call and print data
 blum_generation = BlumBlum(123, 383, 503, 10000)
-print(blum_generation)
+print(*blum_generation, sep='\n')
 
 #Histogram
 plt.figure(figsize=(8,5))
