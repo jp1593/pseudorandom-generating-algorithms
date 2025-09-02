@@ -19,7 +19,7 @@ def middle_square(seed, amount):
     
 # Function call and print of values
 random_number = middle_square(7604, 1000)
-print(random_number)
+print(*random_number, sep="\n")
 
 # Histogram
 plt.figure(figsize=(8,5))
