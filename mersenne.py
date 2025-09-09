@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 # Constantes del Mersenne Twister
 n = 624
 m = 397
@@ -72,7 +74,17 @@ def MersenneTwister_Aleatorio(semilla, cantidad):
 
     return resultados
 
-
-MersenneResult = MersenneTwister_Aleatorio(5489, 10)
+MersenneResult = MersenneTwister_Aleatorio(5489, 1000)
 print(*MersenneResult, sep="\n")
+
+#Histogram
+plt.figure(figsize=(8,5))
+plt.hist(MersenneResult, bins=35, color='skyblue', edgecolor='black', alpha=0.7)
+plt.title("Histogram of Pseudo-random Numbers (MersenneTwister)")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.grid(axis='y', alpha=0.3)
+plt.show()
+
+
 
