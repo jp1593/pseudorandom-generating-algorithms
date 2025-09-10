@@ -1,4 +1,7 @@
 import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import chisquare
+
 
 # Constantes del Mersenne Twister
 n = 624
@@ -87,4 +90,32 @@ plt.grid(axis='y', alpha=0.3)
 plt.show()
 
 
+# Hypotesis test:
+# Number normalization [0,1]
+normalized_mt = [x / 2**32 for x in MersenneResult]
+
+bins = 35
+n = len(normalized_mt)
+E = n / bins  
+
+# Stadistic Chi^2
+counts, _ = np.histogram(normalized_mt, bins=bins, range=(0.0, 1.0))
+chi2_stat, p_val = chisquare(counts, f_exp=[E]*bins)
+
+# Critic Values (df = 34)
+chi2_95 = 48.602
+chi2_90 = 45.563
+
+print("\n=== Prueba de Uniformidad (Chi-cuadrado - Mersenne Twister) ===")
+print(f"Chi² (scipy)    = {chi2_stat:.4f}")
+print(f"\nComparación con tabla:")
+print(f"  chi²[0.95, 34] = {chi2_95}")
+print(f"  chi²[0.90, 34] = {chi2_90}")
+
+if chi2_stat < chi2_95:
+    print("\nA un nivel de confianza del 95%: no podemos rechazar la hipótesis nula de que los números generados provienen de una distribución uniforme.")
+elif chi2_stat < chi2_90:
+    print("\nA un nivel de confianza del 90%: no podemos rechazar la hipótesis nula de que los números generados provienen de una distribución uniforme, pero sí se rechaza al 95%.")
+else:
+    print("Según la prueba, se rechaza la hipótesis nula: los números generados no provienen de una distribución uniforme.")
 
