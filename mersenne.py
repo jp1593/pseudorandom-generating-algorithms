@@ -119,3 +119,28 @@ elif chi2_stat < chi2_90:
 else:
     print("Según la prueba, se rechaza la hipótesis nula: los números generados no provienen de una distribución uniforme.")
 
+# Autocorrelation Test
+def autocorr(x, k):
+    x = np.asarray(x)
+    n = len(x)
+    xbar = x.mean()
+    num = np.dot(x[:n-k]-xbar, x[k:]-xbar)
+    den = np.dot(x-xbar, x-xbar)
+    return num/den
+
+print("\n=== Prueba de Autocorrelación (Mersenne Twister) ===")
+alpha = 0.05
+z_alpha = 1.96  # 95% IC
+
+for k in (1, 2, 5, 10):
+    r = autocorr(normalized_mt, k)
+    z = r * np.sqrt(n)
+    margin = z_alpha / (12 * np.sqrt(n-k))
+    IC_inf = r - margin
+    IC_sup = r + margin
+    print(f"{k}: r={r:.4f}, z≈{z:.3f}, IC=[{IC_inf:.5f}, {IC_sup:.5f}]")
+    if IC_inf <= 0 <= IC_sup:
+        print("   -> No, se rechaza independencia (0 en IC).")
+    else:
+        print("   -> Se detecta dependencia (0 fuera del IC).")
+
