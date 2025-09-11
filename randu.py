@@ -51,3 +51,30 @@ elif chi2_stat < chi2_90:
     print("\nA un nivel de confianza del 90%: no podemos rechazar la hipótesis nula de que los números generados provienen de una distribución uniforme, pero sí se rechaza al 95%.")
 else:
     print("Según la prueba, se rechaza la hipótesis nula: los números generados no provienen de una distribución uniforme.")
+
+# Autocorrelation test
+def autocorr(x, k):
+    x = np.asarray(x)
+    n = len(x)
+    xbar = x.mean()
+    num = np.dot(x[:n-k]-xbar, x[k:]-xbar)
+    den = np.dot(x-xbar, x-xbar)
+    return num/den
+
+print("\n=== Prueba de Autocorrelación (Randu) ===")
+alpha = 0.05
+z_alpha = 1.96  # 95%
+for k in (1,2,5,10):
+    r = autocorr(random, k)
+    z = r * np.sqrt(n)
+
+    # Confidence Interval
+    margin = z_alpha / (12 * np.sqrt(n-k))
+    CI_inf = r - margin
+    CI_sup = r + margin
+    
+    print(f"{k}: r = {r:.4f}, z ≈ {z:.3f}, CI = [{CI_inf:.5f}, {CI_sup:.5f}]")
+    if CI_inf <= 0 <= CI_sup:
+        print("   -> No se rechaza independencia (0 está en el IC).")
+    else:
+        print("   -> Se detecta dependencia (0 fuera del IC).")
