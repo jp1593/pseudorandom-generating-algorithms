@@ -56,3 +56,34 @@ elif chi2_stat < chi2_90:
 else:
     print("\nSegún la prueba, debemos rechazar la hipótesis nula: los números generados no provienen de una distribución uniforme.")
 
+# Autocorrelation test:
+# Autocorrelation function
+def autocorr(x, k):
+    """
+    Autocorrelación para lag k
+    """
+    x = np.asarray(x)
+    n = len(x)
+    xbar = x.mean()
+    num = np.dot(x[:n-k]-xbar, x[k:]-xbar)
+    den = np.dot(x-xbar, x-xbar)
+    return num/den
+
+print("\n=== Prueba de Autocorrelación (LCG) ===")
+alpha = 0.05
+z_alpha = 1.96  # 95%
+for k in (1, 2, 5, 10):
+    r = autocorr(pseudo_number, k)
+    z = r * np.sqrt(n)
+
+    # Confidence Interval
+    margin = z_alpha / (12 * np.sqrt(n-k))
+    CI_inf = r - margin
+    CI_sup = r + margin
+    
+    print(f"{k}: r = {r:.4f}, z ≈ {z:.3f}, CI = [{CI_inf:.5f}, {CI_sup:.5f}]")
+    if CI_inf <= 0 <= CI_sup:
+        print("   -> No se rechaza independencia (0 está en el intervalo).")
+    else:
+        print("   -> Se detecta dependencia (0 fuera del intervalo).")
+
